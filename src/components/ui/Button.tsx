@@ -6,7 +6,7 @@ export interface ButtonProps {
     text: string;
     startIcon?: ReactElement;  //? for making it optional in typsescipt
     endIcon?:ReactElement;
-    onClick: () => void;
+    onClick?: () => void;
 
 }
 
@@ -24,7 +24,7 @@ const sizeStyles = {
 const defaultStyles = "rounded-md p-4 flex font-light items-center"
 
 export const Button = (props: ButtonProps) => {
-    return <button className={`${variantStyles[props.variant]} ${defaultStyles} ${sizeStyles[props.size]}`}>{props.startIcon ? <div className="pr-2">{props.startIcon}</div> : null} {props.text} </button>
+    return <button onClick={props.onClick} className={`${variantStyles[props.variant]} ${defaultStyles} ${sizeStyles[props.size]}`}>{props.startIcon ? <div className="pr-2">{props.startIcon}</div> : null} {props.text} </button>
 }
 
-<Button variant= "primary" size="md" onClick={() => {}} text={"Share"} />
+{/* <Button variant= "primary" size="md" onClick={() => {}} text={"Share"} /> */}
