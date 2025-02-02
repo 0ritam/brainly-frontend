@@ -29,6 +29,8 @@ export function CreateContentModal({ open, onClose }) {
         "Authorization":localStorage.getItem("token")
       }
     })
+
+    onClose();
   }
 
   return (

@@ -5,7 +5,8 @@ import axios from "axios";
 export function useContent() {
     const [contents, setContents] = useState([]);
 
-    useEffect(() => {  //you can't have async  effect that's why we will use then
+    function refresh() {
+
         axios.get(`${BACKEND_URL}/api/v1/content`,{
             headers:{
                 "Authorization" : localStorage.getItem("token")
@@ -14,7 +15,20 @@ export function useContent() {
                 .then((response) => {
                     setContents(response.data.content)
                 })
+
+    }
+
+    useEffect(() => { 
+         //you can't have async  effect that's why we will use then
+        refresh()
+        let interval = setInterval(() => {
+            refresh()
+        }, 10 * 1000)
+
+        return () => {
+            clearInterval(interval);
+        }
     }, [])
 
-    return contents;
+    return {contents, refresh};
 }

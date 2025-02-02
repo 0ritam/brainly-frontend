@@ -5,13 +5,20 @@ import { PlusIcon } from "../icons/PlusIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { Card } from "../components/ui/Card";
 import { CreateContentModal } from "../components/ui/CreateContentModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SideBar } from "../components/ui/SideBar";
 import { useContent } from "../hooks/useContent";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 export function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
-  const contents = useContent();
+  const {contents,refresh } = useContent();
+  
+
+  useEffect(() => {
+    refresh();
+  }, [modalOpen])
 
   return (
     <div>
@@ -35,13 +42,24 @@ export function Dashboard() {
             text="Add Content"
           />
           <Button
+            onClick={async() => {
+              const response = await axios.post(`${BACKEND_URL}/api/v1/brain/share`, {
+                share: true
+              }, {
+                headers: {
+                  "Authorization":localStorage.getItem("token")
+                }
+              }); // store thsi in config
+              const shareurl =  `http://localhost:5173/share/${response.data.hash}`
+              alert(shareurl);
+            }}
             startIcon={<ShareIcon size="lg" />}
             variant="secondary"
             size="sm"
             text="Share Brain"
           />
         </div>
-        <div className="flex gap-4">
+        <div className="flex-wrap gap-4">
           {/* {JSON.stringify(contents)} */}
           {contents.map(
             
